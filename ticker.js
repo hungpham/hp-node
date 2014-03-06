@@ -3,26 +3,36 @@ var util = require('util'),
 
 var Ticker = function() {
 	console.log('Ticker function init');
+	this.timerInterval = 0;
+	//TICK Stop after n times
+	this.limit = Math.ceil(Math.random() * 10);
+	this.count = 0;
 };
 
 util.inherits(Ticker, EventEmitter);
 
-var ticker = new Ticker();
 
-ticker.on('tick', function() {	
-	console.log('TICK');
-});
+
+Ticker.prototype.tick = function() {
+	var self = this;
+	self.count++;
+	console.log('TICK: ' + self.count);
+	self.emit('tick', self.count);
+};
+
+Ticker.prototype.tickStop = function() {		
+	console.log('TICK stop at: ' + this.limit);		
+	clearInterval(this.timerInterval);
+};
 
 //Emitting an event every 1 second
-ticker.on('tickBySecond', function() {	
+Ticker.prototype.tickBySecond = function() {
+	var self = this;
 	console.log('tick by second...');
-	setInterval(function(){
-		ticker.emit('tick');
+	this.timerInterval = setInterval(function(){
+		self.tick();
 	}, 1000);
-});
-
-ticker.emit('tickBySecond');
-
+};
 
 module.exports = Ticker;
 
