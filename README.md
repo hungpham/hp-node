@@ -12,9 +12,9 @@ Day2:
 - All other items are now OPTIONAL
 
 Day3: 
--Exercise 1
+- Exercise 1:
     Build a pseudo-class named “Ticker” that emits a “tick” event every 1 second.
--Exercise 2
+- Exercise 2:
     Build a script that instantiates one Ticker and bind to the “ticker” event, printing “TICK” every time it gets one.
--Exercise 3
+- Exercise 3:
     Make an HTTP server that serves files. The file path is provided in the URL like this: http://localhost:4000/path/to/my/file.txt
