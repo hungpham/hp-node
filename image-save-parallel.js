@@ -5,6 +5,8 @@ var path = require('path');
 var url = require('url');
 var flow = require('nimble');
 var server = http.createServer();
+var util = require('util');
+
 var pathname, path_file, tasks = [], urls = [], filesIndex = 0;
 
 var requestHandle = function(req, response){

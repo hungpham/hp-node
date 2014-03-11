@@ -4,9 +4,12 @@ var request = require('request');
 var path = require('path');
 var url = require('url');
 var server = http.createServer();
-var pathname, path_file;
+var util = require('util');
 
+
+var pathname, path_file;
 var urls, file_index, file_url, time_start, time_end;
+
 var requestHandle = function(req, response){
 	pathname = url.parse(req.url).pathname;
 	path_file = __dirname + pathname;
@@ -60,13 +63,21 @@ function writeImage(file_url, callback){
 
 
 function save_callback(){					
-	if(file_index < urls.length - 1) {
+	// if(file_index < urls.length - 1) {
+	if(file_index < 1 - 1) {
 		file_index++;
 		writeImage(urls[file_index], save_callback);
 	} else {
 		console.log("\nAll files were saved!");
 		time_end = process.hrtime(time_start);
 		console.log("Total time: %d seconds", time_end[0]);
+		
+		var memoryUsage = process.memoryUsage();
+		// var memoryUsage = util.inspect(process.memoryUsage());
+		console.log("process.memoryUsage.heapUsed: " + memoryUsage.heapUsed);
+		console.log("process.memoryUsage.heapTotal : " + memoryUsage.heapTotal );
+		console.log("process.memoryUsage.rss : " + memoryUsage.rss );
+		
 		
 	}
 };
