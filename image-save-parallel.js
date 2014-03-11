@@ -26,7 +26,7 @@ var requestHandle = function(req, response){
 				urls = data.toString().split(';');				
 				console.log(urls.length); 
 				for (index in urls) {	 
-					var task = function() {
+					var task = function(cb) {
 						var file_url = urls[filesIndex++].replace(/\n$/g, '');						
 						var file_name = file_url.substring(file_url.lastIndexOf('/') + 1);
 						console.log('\n' + 'start download file: ' + file_name);						
@@ -37,6 +37,7 @@ var requestHandle = function(req, response){
 							else
 							  console.log(file_name + " was saved!" + '\n');
 							  console.timeEnd();
+							  cb();
 						  }); 
 						});
 					};
@@ -51,9 +52,8 @@ var requestHandle = function(req, response){
 					},
 					function (callback) {
 						console.log("Start flow parallel download !" + '\n');
-						flow.parallel(tasks);
+						flow.parallel(tasks,callback);
 						console.timeEnd();
-						callback();
 					},
 					function (callback) {
 						console.log("All files were saved!" + '\n');
