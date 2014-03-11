@@ -25,18 +25,19 @@ var requestHandle = function(req, response){
 				response.writeHead(200, {});				
 				urls = data.toString().split(';');				
 				console.log(urls.length); 
+				var time_start = process.hrtime();
+				console.log("Start time: %d", time_start[0]);
 				for (index in urls) {	 
 					var task = function(cb) {
 						var file_url = urls[filesIndex++].replace(/\n$/g, '');						
 						var file_name = file_url.substring(file_url.lastIndexOf('/') + 1);
-						console.log('\n' + 'start download file: ' + file_name);						
+						console.log('start download file: ' + file_name);						
 						request.get({url: file_url, encoding: 'binary'}, function (err, response, body) {
 						  fs.writeFile('images/' + file_name, body, 'binary', function(err) {
 							if(err)
 							  console.log(err);
 							else
-							  console.log(file_name + " was saved!" + '\n');
-							  console.timeEnd();
+							  console.log(file_name + " was saved!");
 							  cb();
 						  }); 
 						});
@@ -46,19 +47,19 @@ var requestHandle = function(req, response){
 				console.log(tasks.length);
 				flow.series([
 					function (callback) {
-						console.log("Start flow series !" + '\n');
-						console.time();
+						console.log("\nStart flow series !" + '\n');
 						callback();
 					},
 					function (callback) {
-						console.log("Start flow parallel download !" + '\n');
+						console.log("\nStart flow parallel download !" + '\n');
 						flow.parallel(tasks,callback);
-						console.timeEnd();
 					},
 					function (callback) {
-						console.log("All files were saved!" + '\n');
-						console.timeEnd();
+						console.log("\nAll files were saved!");
 						callback();
+						var time_end = process.hrtime(time_start);
+						console.log("Total time: %d seconds", time_end[0]);
+						response.end(data.toString());
 					}
 				]);
 				 
