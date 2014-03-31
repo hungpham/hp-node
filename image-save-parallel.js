@@ -49,10 +49,6 @@ var requestHandle = function(req, response){
 				console.log(tasks.length);
 				flow.series([
 					function (callback) {
-						console.log("\nStart flow series !" + '\n');
-						callback();
-					},
-					function (callback) {
 						console.log("\nStart flow parallel download !" + '\n');
 						flow.parallel(tasks,callback);
 					},
